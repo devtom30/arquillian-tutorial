@@ -65,8 +65,14 @@ public class SimpleBundleTestCase {
 
         // Get the service reference
         BundleContext context = kimiosKernelBundle.getBundleContext();
-        ServiceReference sref = context.getServiceReference(ISecurityController.class.getName());
+        ServiceReference<ISecurityController> sref = context.getServiceReference(ISecurityController.class);
         assertNotNull("ServiceReference not null", sref);
+
+        // Get the service for the reference
+        System.out.println("service : " + sref.getClass().getName());
+//        ISecurityController service = context.getService(sref);
+//        assertNotNull("Service not null", service);
+
     }
 
     @Test

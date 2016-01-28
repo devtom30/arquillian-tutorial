@@ -39,8 +39,7 @@ public class SimpleBundleTestCase {
         return archive;
     }
 
-    @Test
-    public void testOtherBundlesPresence() throws Exception {
+    public Bundle retrieveKimiosKernelBundle() {
         Bundle[] bundles = context.getBundles();
         String pattern = "kimios-kernel";
         Bundle kimiosKernelBundle = null;
@@ -52,6 +51,18 @@ public class SimpleBundleTestCase {
                 System.out.println("bundle with name matching pattern '" + pattern + "' found.");
             }
         }
+
+        return kimiosKernelBundle;
+    }
+
+//    @Test
+//    public void testBundleKimiosKernel() throws Exception {
+//        // retrieve bundle
+//    }
+
+    @Test
+    public void testOtherBundlesPresence() throws Exception {
+        Bundle kimiosKernelBundle = this.retrieveKimiosKernelBundle();
         assertNotNull(kimiosKernelBundle);
         assertEquals(Bundle.ACTIVE, kimiosKernelBundle.getState());
     }

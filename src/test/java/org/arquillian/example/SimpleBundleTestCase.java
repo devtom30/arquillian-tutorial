@@ -9,8 +9,10 @@ import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kimios.kernel.controller.ISecurityController;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 import java.io.InputStream;
 
@@ -26,6 +28,7 @@ public class SimpleBundleTestCase {
     @Deployment
     public static JavaArchive createdeployment() {
         final JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar");
+        archive.addClass(ISecurityController.class);
         archive.setManifest(new Asset() {
             public InputStream openStream() {
                 OSGiManifestBuilder builder = OSGiManifestBuilder.newInstance();
@@ -55,10 +58,16 @@ public class SimpleBundleTestCase {
         return kimiosKernelBundle;
     }
 
-//    @Test
-//    public void testBundleKimiosKernel() throws Exception {
-//        // retrieve bundle
-//    }
+    @Test
+    public void testBundleKimiosKernel() throws Exception {
+        // retrieve the bundle
+        Bundle kimiosKernelBundle = this.retrieveKimiosKernelBundle();
+
+        // Get the service reference
+        BundleContext context = kimiosKernelBundle.getBundleContext();
+        ServiceReference sref = context.getServiceReference(ISecurityController.class.getName());
+        assertNotNull("ServiceReference not null", sref);
+    }
 
     @Test
     public void testOtherBundlesPresence() throws Exception {

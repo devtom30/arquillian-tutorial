@@ -35,7 +35,25 @@ public class SimpleBundleTestCase {
                 return builder.openStream();
             }
         });
+
         return archive;
+    }
+
+    @Test
+    public void testOtherBundlesPresence() throws Exception {
+        Bundle[] bundles = context.getBundles();
+        String pattern = "kimios-kernel";
+        Bundle kimiosKernelBundle = null;
+        for (Bundle b : bundles) {
+            String bundleSymbName = b.getSymbolicName();
+//            System.out.println("bundle " + b.getBundleId() + " - " + bundleSymbName + " in state " + b.getState());
+            if (bundleSymbName.matches(pattern)) {
+                kimiosKernelBundle = b;
+                System.out.println("bundle with name matching pattern '" + pattern + "' found.");
+            }
+        }
+        assertNotNull(kimiosKernelBundle);
+        assertEquals(Bundle.ACTIVE, kimiosKernelBundle.getState());
     }
 
     @Test

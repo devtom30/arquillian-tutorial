@@ -51,22 +51,29 @@ public class SimpleBundleTestCase {
     public void testBundleInjection(@ArquillianResource Bundle bundle) throws Exception {
         // Assert that the bundle is injected
         assertNotNull("Bundle injected", bundle);
+        System.out.println("Bundle injected");
 
         // Assert that the bundle is in state RESOLVED
         // Note when the test bundle contains the test case it
         // must be resolved already when this test method is called
         assertEquals("Bundle RESOLVED", Bundle.RESOLVED, bundle.getState());
+        System.out.println(bundle.getState());
 
         // Start the bundle
         bundle.start();
         assertEquals("Bundle ACTIVE", Bundle.ACTIVE, bundle.getState());
+        System.out.println( bundle.getState());
 
         // Assert the bundle context
         BundleContext context = bundle.getBundleContext();
         assertNotNull("BundleContext available", context);
+        System.out.println("BundleContext available");
 
         // Stop the bundle
         bundle.stop();
         assertEquals("Bundle RESOLVED", Bundle.RESOLVED, bundle.getState());
+        System.out.println(bundle.getState());
+        System.out.println(bundle.getSymbolicName());
+
     }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArquillianContainersManager">
+    <container containerId="container.arquillian.embedded.osgi-karaf" name="OSGi :: Karaf">
+      <maven-library groupId="org.jboss.arquillian.container" artifactId="arquillian-container-karaf-embedded" version="RELEASE" />
+    </container>
+    <container containerId="container.arquillian.embedded.osgi-jboss" name="OSGi :: JBoss">
+      <maven-library groupId="org.jboss.arquillian.container" artifactId="arquillian-container-jbosgi-embedded" version="RELEASE" />
+    </container>
+    <container containerId="container.arquillian.embedded.weld.ee.1.1" name="Weld EE Embedded 1.1.x">
+      <maven-library groupId="org.jboss.arquillian.container" artifactId="arquillian-weld-ee-embedded-1.1" version="RELEASE" />
+    </container>
+    <container containerId="container.arquillian.embedded.glassfish.3.1" name="GlassFish Embedded 3.1">
+      <maven-library groupId="org.jboss.arquillian.container" artifactId="arquillian-glassfish-embedded-3.1" version="RELEASE" />
+    </container>
+    <container containerId="container.arquillian.manual" name="Manual container configuration">
+      <maven-library groupId="org.jboss.as" artifactId="jboss-as-arquillian-container-managed" version="7.2.0.Final" />
+    </container>
+    <container containerId="container.arquillian.manual" name="Manual container configuration (1) Karaf ">
+      <maven-library groupId="org.jboss.arquillian.container" artifactId="arquillian-container-karaf-managed" version="2.1.0.Final" />
+    </container>
+    <container containerId="container.arquillian.manual" name="Manual container configuration (1) Karaf Remote">
+      <maven-library groupId="org.jboss.arquillian.container" artifactId="arquillian-container-karaf-remote" version="2.1.0.Final" />
+    </container>
+  </component>
+</project>

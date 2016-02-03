@@ -39,7 +39,7 @@ public class SimpleBundleTestCase {
     private static String ADMIN_USER_SOURCE = "kimios";
 
     @Deployment
-    public static JavaArchive createdeployment() {
+    public static JavaArchive createDeployment() {
         final JavaArchive archive = ShrinkWrap.create(JavaArchive.class, "test.jar");
         archive.addClasses(
                 SimpleBundleTestCase.class
@@ -66,25 +66,6 @@ public class SimpleBundleTestCase {
         archive.as(ZipExporter.class).exportTo(exportedFile, true);
 
         return archive;
-    }
-
-    public Bundle retrieveKimiosKernelBundle() {
-        Bundle[] bundles = context.getBundles();
-        String pattern = "kimios-kernel";
-        Bundle kimiosKernelBundle = null;
-        for (Bundle b : bundles) {
-            String bundleSymbName = b.getSymbolicName();
-            if (bundleSymbName.matches("^.*imios.*$")) {
-                System.out.println("bundle " + b.getBundleId() + " - " + bundleSymbName + " in state " + b.getState());
-
-                if (bundleSymbName.matches(pattern)) {
-                    kimiosKernelBundle = b;
-                    System.out.println("bundle with name matching pattern '" + pattern + "' found.");
-                }
-            }
-        }
-
-        return kimiosKernelBundle;
     }
 
     @Before
@@ -125,21 +106,6 @@ public class SimpleBundleTestCase {
     }
 
     @Test
-    public void testSecurityController() throws Exception {
-//        ServiceReference[] sRefs = this.context.getAllServiceReferences(ISecurityController.class.getName(), null);
-        ServiceReference[] sRefs = this.context.getBundle().getBundleContext().getAllServiceReferences(ISecurityController.class.getName(), null);
-        System.out.println("All service references");
-        System.out.println(sRefs.toString());
-    }
-
-    @Test
-    public void testOtherBundlesPresence() throws Exception {
-        Bundle kimiosKernelBundle = this.retrieveKimiosKernelBundle();
-        assertNotNull(kimiosKernelBundle);
-        assertEquals(Bundle.ACTIVE, kimiosKernelBundle.getState());
-    }
-
-    @Test
     public void testBundleContextInjection() throws Exception {
         assertNotNull("BundleContext injected", context);
         System.out.println("BundleContext injected");
@@ -173,8 +139,11 @@ public class SimpleBundleTestCase {
         // Stop the bundle
         bundle.stop();
         assertEquals("Bundle RESOLVED", Bundle.RESOLVED, bundle.getState());
-        System.out.println(bundle.getState());
-        System.out.println(bundle.getSymbolicName());
+        System.out.println(bundle.getSymbolicName() + " (" + bundle.getBundleId() + ") is in state : " + bundle.getState());
 
+        // Start the bundle
+        bundle.start();
+        assertEquals("Bundle ACTIVE", Bundle.ACTIVE, bundle.getState());
+        System.out.println(bundle.getSymbolicName() + " (" + bundle.getBundleId() + ") is in state : " + bundle.getState());
     }
 }

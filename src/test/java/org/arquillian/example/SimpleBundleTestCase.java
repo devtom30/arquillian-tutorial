@@ -8,28 +8,35 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kimios.kernel.controller.ISecurityController;
 import org.kimios.kernel.exception.AccessDeniedException;
 import org.kimios.kernel.exception.DataSourceException;
 import org.kimios.kernel.security.model.Session;
+import org.kimios.kernel.user.model.User;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(Arquillian.class)
 public class SimpleBundleTestCase {
 
     @ArquillianResource
     BundleContext context;
+
+    private ISecurityController securityController;
+
+    private static String ADMIN_LOGIN = "admin";
+    private static String ADMIN_PWD= "kimios";
+    private static String ADMIN_USER_SOURCE = "kimios";
 
     @Deployment
     public static JavaArchive createdeployment() {
@@ -80,25 +87,18 @@ public class SimpleBundleTestCase {
         return kimiosKernelBundle;
     }
 
-    @Test
-    public void testBundleKimiosKernel() throws Exception {
-        // retrieve the bundle
-//        Bundle kimiosKernelBundle = this.retrieveKimiosKernelBundle();
-
+    @Before
+    public void setUp() {
         // Get the service reference
-//        BundleContext context = kimiosKernelBundle.getBundleContext();
-//        BundleContext context = this.context;
         ServiceReference<ISecurityController> sref = context.getServiceReference(ISecurityController.class);
-        assertNotNull("ServiceReference not null", sref);
+        // Get the service
+        this.securityController = context.getService(sref);
+    }
 
-        // Get the service for the reference
-        System.out.println("service : " + sref.getClass().getName());
-        ISecurityController service = context.getService(sref);
-        assertNotNull("Service not null", service);
-        System.out.println("Just got the service, now we can test it. Go !");
-
+    @Test
+    public void testStartSession() throws Exception {
         try {
-            Session sess = service.startSession("admin", "kimios", "kimios");
+            Session sess = this.securityController.startSession(ADMIN_LOGIN, ADMIN_USER_SOURCE, ADMIN_PWD);
             assertNotNull("Session is not null", sess);
             assertTrue("sessionId length > 0", sess.getUid().length() > 0);
         } catch (DataSourceException e) {
@@ -106,6 +106,22 @@ public class SimpleBundleTestCase {
         } catch (AccessDeniedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testGetUsers() throws Exception {
+        List<User> users = this.securityController.getUsers(ADMIN_USER_SOURCE);
+        assertTrue("We have users, at least one, the default user", users.size() > 0);
+
+        // admin is in users list
+        boolean adminExists = false;
+        for (User user : users) {
+            if (user.getUid().equals(ADMIN_LOGIN)) {
+                adminExists = true;
+                continue;
+            }
+        }
+        assertTrue("admin user exists in data source", adminExists);
     }
 
     @Test

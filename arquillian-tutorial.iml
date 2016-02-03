@@ -89,5 +89,11 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.sisu:org.eclipse.sisu.inject:0.3.0.M1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-compiler-javac:2.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-compiler-api:2.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kimios:kimios-model:1.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.reflections:reflections:0.9.8" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: javassist:javassist:3.12.1.GA" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: dom4j:dom4j:1.6.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: xml-apis:xml-apis:1.0.b2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.kimios:kimios-exceptions:1.1-SNAPSHOT" level="project" />
   </component>
 </module>

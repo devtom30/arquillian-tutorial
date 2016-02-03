@@ -11,6 +11,9 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kimios.kernel.controller.ISecurityController;
+import org.kimios.kernel.exception.AccessDeniedException;
+import org.kimios.kernel.exception.DataSourceException;
+import org.kimios.kernel.security.model.Session;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(Arquillian.class)
@@ -93,6 +97,15 @@ public class SimpleBundleTestCase {
         assertNotNull("Service not null", service);
         System.out.println("Just got the service, now we can test it. Go !");
 
+        try {
+            Session sess = service.startSession("admin", "kimios", "kimios");
+            assertNotNull("Session is not null", sess);
+            assertTrue("sessionId length > 0", sess.getUid().length() > 0);
+        } catch (DataSourceException e) {
+            e.printStackTrace();
+        } catch (AccessDeniedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

@@ -49,18 +49,10 @@ public class SimpleBundleTestCase {
                 OSGiManifestBuilder builder = OSGiManifestBuilder.newInstance();
                 builder.addBundleSymbolicName(archive.getName());
                 builder.addBundleManifestVersion(2);
-//                builder.addImportPackages(Bundle.class);
-//                builder.addImportPackages("org.kimios.kernel.*");
                 builder.addDynamicImportPackages("org.kimios.kernel.*");
-//                builder.addImportPackages("org.arquillian.example");
                 return builder.openStream();
             }
         });
-
-//        File[] files = Maven.configureResolver().useLegacyLocalRepo(true).loadPomFromFile("pom.xml").importRuntimeAndTestDependencies().resolve().withTransitivity().asFile();
-//        for (File file : files) {
-//            archive.addAsResource(file);
-//        }
 
         File exportedFile = new File("exportedFile.jar");
         archive.as(ZipExporter.class).exportTo(exportedFile, true);
